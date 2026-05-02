@@ -1,0 +1,18 @@
+
+services:
+  api_vulnerable:
+    build: .
+    ports:
+      - "5000:5000"
+    container_name: vulnerable-python-api
+
+  zap_web:
+    image: ghcr.io/zaproxy/zaproxy:stable
+    container_name: zap_web_interface
+    command: zap-webswing.sh
+    shm_size: "2g"
+    ports:
+      - "8080:8080" # Puerto para acceder a la GUI de ZAP desde el navegador
+      - "8081:8080" 
+    depends_on:
+      - api_vulnerable
